@@ -1,1 +1,1 @@
-<img src="materials/pngwing.com.png" height="400" style="position: absolute; right: 90px;"/>
+<img src="materials/pngwing.com.png" height="400" style="position: absolute; right: 30px;"/>
