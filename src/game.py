@@ -7,6 +7,7 @@ class Game:
         self.blocks=[IBlock(),JBlock(),LBlock(),OBlock(),SBlock(),TBlock(),ZBlock()]
         self.currentBlock=self.getRandomBlock()
         self.nextBlock=self.getRandomBlock()
+        self.game_over=False
     def getRandomBlock(self):
         if (len(self.blocks)==0):
             self.blocks=[IBlock(),JBlock(),LBlock(),OBlock(),SBlock(),TBlock(),ZBlock()]
@@ -36,6 +37,9 @@ class Game:
             self.field.field[position.row][position.column]=self.currentBlock.id
         self.currentBlock = self.nextBlock
         self.nextBlock=self.getRandomBlock()
+        self.field.clearFullRows()
+        if not self.freeCell():
+            self.game_over=True
     def freeCell(self):
         tiles = self.currentBlock.getCellPos()
         for tile in tiles:
@@ -56,3 +60,9 @@ class Game:
         self.currentBlock.rotate(-1)
         if(not self.isBlockInside()or not self.freeCell()):
             self.currentBlock.undoRotation(-1)
+    def reset(self):
+        self.field.reset()
+        self.blocks=[IBlock(),JBlock(),LBlock(),OBlock(),SBlock(),TBlock(),ZBlock()]
+        self.currentBlock =self.getRandomBlock()
+        self.nextBlock=self.getRandomBlock()
+        self.game_over=False

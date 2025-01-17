@@ -1,8 +1,11 @@
 import pygame
 from game import Game
 pygame.init()
-game=Game(20,10)
 pygame.mixer.init()
+bgmusic=pygame.mixer.Sound("../materials/tetrisSoundtrack.ogg")
+bgmusic.set_volume(1)
+bgmusic.play(loops=-1)
+game=Game(20,10)
 screen=pygame.display.set_mode((450,750))
 clock = pygame.time.Clock()
 font = pygame.font.Font("../materials/joystix_monospace.otf",15)
@@ -13,10 +16,8 @@ pygame.time.set_timer(GAMEUPDATE,200)
 bg=pygame.image.load("../materials/pngwing.com.png")
 walls=pygame.image.load("../materials/walls.png")
 resize=pygame.transform.scale(bg,(280,190))
-pygame.mixer.music.load("../materials/tetrisSoundtrack.ogg")
-pygame.mixer.music.play(-1,0,0)
-pygame.mixer.music.set_volume(1)
 buttonposs=[(130,375,165,25),(130,405,165,25),(130,425,165,25)]
+gameOverArrow=0
 arrowpos=0
 while run:
     for event in pygame.event.get():
@@ -35,17 +36,27 @@ while run:
                         ingame = True
         elif ingame:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT and not game.game_over:
                     game.moveLeft()
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT and not game.game_over:
                     game.moveRight()
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN and not game.game_over:
                     game.moveDown()
-                elif event.key == pygame.K_d:
+                elif event.key == pygame.K_d and not game.game_over:
                     game.rotateClockwise()
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_a and not game.game_over:
                     game.rotateAntiClockwise()
-            if event.type == GAMEUPDATE:
+                elif event.key == pygame.K_RIGHT and game.game_over:
+                    gameOverArrow=(gameOverArrow+1)%2
+                elif event.key == pygame.K_LEFT and game.game_over:
+                    gameOverArrow=(gameOverArrow-1)%2
+                elif event.key == pygame.K_RETURN:
+                    if gameOverArrow == 1:
+                        ingame = False
+                        game.reset()
+                    elif gameOverArrow == 0:
+                        game.reset()
+            if event.type == GAMEUPDATE and not game.game_over:
                 game.moveDown()
     # <-------------------------MAIN MENU ------------------------>
     if not ingame:
@@ -75,6 +86,16 @@ while run:
         game.draw(screen)
         screen.blit(pygame.transform.scale(walls,(20,600)),(0,10))
         screen.blit(pygame.transform.scale(walls,(20,600)),(320,10))
+        screen.blit(font.render("Score",1,(252,251,244)),(360,10))
+        screen.blit(font.render("Next Block",1,(252,251,244)),(160,610))
+        if game.game_over:
+            pygame.draw.rect(screen,(252,251,244),pygame.Rect(25,250,400,200))
+            pygame.draw.rect(screen,(65, 105, 225),pygame.Rect(35,260,380,180))
+            screen.blit(pygame.transform.scale(font.render("Game Over",1,"red"),(200,50)),(120,280))
+            pygame.draw.rect(screen,(65, 105, 225) if gameOverArrow != 0 else (252,251,244),pygame.Rect(40,350,100,20))
+            screen.blit(font.render("Restart",1,(252,251,244) if gameOverArrow!=0 else (65, 105, 225)),(50,350))
+            pygame.draw.rect(screen,(65, 105, 225) if gameOverArrow != 1 else (252,251,244),pygame.Rect(150,350,250,20))
+            screen.blit(font.render("Back to Main Menu",1,(252,251,244) if gameOverArrow!=1 else (65, 105, 225)),(170,350))
     #<-------------------------END------------------------------>
     pygame.display.update()
     clock.tick(60)
