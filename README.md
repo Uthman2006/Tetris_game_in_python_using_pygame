@@ -1,7 +1,7 @@
 <img src="materials/pngwing.com.png" height="400"><br>
 # Classical Game Tetris in Python Programming Language Using Pygame
 ### Description
-This game was developed using Python's frequintly used library PyGame. The algorith of this game is based on the position of a block which means block won't move on the background of a game. However, when a certain block reaches to have a collision program will save its position there as a numbers. Field for this game uses list of lists to describe in the background, but for the front of the game it uses a rectangular shape to draw the field. Field is 20x10 where 20 is the height and 10 is the width of the game which means there are 20 lists in a list and 10 numbers in each list. For collisions, It uses teh savede blocks and the  size of the field to check. First it checks if the cell before it is free, and if it is indeed free, then the block will move. To move the blocks you can do:
+This game was developed using Python's frequintly used library PyGame. The algorith of this game is based on the position of a block which means block won't move on the background of a game. However, when a certain block reaches to have a collision program will save its position there as numbers. Field for this game uses list of lists to describe in the background, but for the front of the game it uses a rectangular shape to draw the field. Field is 20x10 where 20 is the height and 10 is the width of the game which means there are 20 lists in a list and 10 numbers in each list. For collisions, It uses the saved blocks and the  size of the field to check. First it checks if the cell before it is free, and if it is indeed free, then the block will move. To move the blocks you can do:
 <table>
     <thead>
         <tr>
