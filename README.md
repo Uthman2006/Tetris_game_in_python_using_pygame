@@ -30,4 +30,4 @@ This game was developed using Python's frequintly used library PyGame. The algor
         <td width="300px" height="100px">Block rotates clockwise</td>
     </tr>
 </table>
-<h2>This version of game was developed by Usmonjon Dusmatov, so do not clone this for your own use, and for the folder <code>materials/</code> , those materials don't have rights to copy. I just downloaded them from some website.</h2>
+<h2>This version of game was developed by Usmonjon Dusmatov, so do not clone this for your own use, and for the folder <code>materials/</code> , those materials doesn't have rights to copy. I just downloaded them from some website.</h2>
