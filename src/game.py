@@ -29,7 +29,8 @@ class Game:
         return block
     def draw(self,screen):
         self.field.draw(screen)
-        self.currentBlock.draw(screen)
+        self.currentBlock.draw(screen,20,10)
+        self.nextBlock.draw(screen,70,640)
         # self.field.printField()
     def moveLeft(self):
         self.currentBlock.move(0,-1)

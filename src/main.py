@@ -116,6 +116,7 @@ while run:
     elif ingame and not insettings:
         screen.fill((65, 105, 225))
         gameArea=pygame.draw.rect(screen,(65, 105, 225),pygame.Rect(20,10,300,600))
+        pygame.draw.rect(screen,(26,31,40),pygame.Rect(150,613,140,120))
         game.draw(screen)
         screen.blit(pygame.transform.scale(walls,(20,600)),(0,10))
         screen.blit(pygame.transform.scale(walls,(20,600)),(320,10))
