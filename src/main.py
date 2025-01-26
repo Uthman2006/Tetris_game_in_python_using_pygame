@@ -49,6 +49,7 @@ while run:
                     game.moveRight()
                 elif event.key == pygame.K_DOWN and not game.game_over:
                     game.moveDown()
+                    game.update_score(0,1)
                 elif event.key == pygame.K_d and not game.game_over:
                     game.rotateClockwise()
                 elif event.key == pygame.K_a and not game.game_over:
@@ -119,6 +120,7 @@ while run:
         screen.blit(pygame.transform.scale(walls,(20,600)),(0,10))
         screen.blit(pygame.transform.scale(walls,(20,600)),(320,10))
         screen.blit(font.render("Score",1,(252,251,244)),(360,10))
+        screen.blit(font.render(f"{game.score:03d}",1,(252,251,244)),(370,30))
         screen.blit(font.render("Next Block",1,(252,251,244)),(160,610))
         if game.game_over:
             bgmusic.stop()
@@ -140,7 +142,7 @@ while run:
         pygame.draw.rect(screen, (252,251,244) if settingsarrowpos!=1 else (65, 105, 225),pygame.Rect(280,305,100*game.sound_effect_volume,10))
         screen.blit(font.render("Sound Effect Volume",1,(252,251,244) if settingsarrowpos!=1 else (65, 105, 225)),(30,300))
         pygame.draw.rect(screen,(65, 105, 225) if settingsarrowpos!=2 else (252,251,244),pygame.Rect(30,350,400,20))
-        screen.blit(font.render("Back To The Main Menu",1,(252,251,244) if settingsarrowpos!=2 else (65, 105, 225)),(90,350))
+        screen.blit(font.render("Back To  Main Menu",1,(252,251,244) if settingsarrowpos!=2 else (65, 105, 225)),(90,350))
     pygame.display.update()
     clock.tick(60)
 pygame.quit()
