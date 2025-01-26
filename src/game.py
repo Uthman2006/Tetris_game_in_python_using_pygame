@@ -12,6 +12,15 @@ class Game:
         self.game_over=False
         self.game_over_sound_effect=pygame.mixer.Sound("../materials/game_over_sound_effect.ogg")
         self.game_over_sound_effect.set_volume(self.sound_effect_volume)
+        self.score=0
+    def update_score(self,lines_cleared,move_down_points):
+        if lines_cleared==1:
+            self.score+=100
+        elif lines_cleared==2:
+            self.score+=300
+        elif lines_cleared == 3:
+            self.score+=500
+        self.score+=move_down_points
     def getRandomBlock(self):
         if (len(self.blocks)==0):
             self.blocks=[IBlock(),JBlock(),LBlock(),OBlock(),SBlock(),TBlock(),ZBlock()]
@@ -20,7 +29,8 @@ class Game:
         return block
     def draw(self,screen):
         self.field.draw(screen)
-        self.currentBlock.draw(screen)
+        self.currentBlock.draw(screen,20,10)
+        self.nextBlock.draw(screen,70,640)
         # self.field.printField()
     def moveLeft(self):
         self.currentBlock.move(0,-1)
@@ -41,7 +51,8 @@ class Game:
             self.field.field[position.row][position.column]=self.currentBlock.id
         self.currentBlock = self.nextBlock
         self.nextBlock=self.getRandomBlock()
-        self.field.clearFullRows()
+        rows_cleared=self.field.clearFullRows()
+        self.update_score(rows_cleared,0)
         if not self.freeCell():
             self.game_over=True
             self.game_over_sound_effect.play(loops=0)
@@ -71,3 +82,4 @@ class Game:
         self.currentBlock =self.getRandomBlock()
         self.nextBlock=self.getRandomBlock()
         self.game_over=False
+        self.score=0
