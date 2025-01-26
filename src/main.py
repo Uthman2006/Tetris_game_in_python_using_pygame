@@ -2,13 +2,15 @@ import pygame
 from game import Game
 pygame.init()
 pygame.mixer.init()
+bgmusic_volume=1
 bgmusic=pygame.mixer.Sound("../materials/tetrisSoundtrack.ogg")
-bgmusic.set_volume(1)
+bgmusic.set_volume(bgmusic_volume)
 bgmusic.play(loops=-1)
 game=Game(20,10)
 screen=pygame.display.set_mode((450,750))
 clock = pygame.time.Clock()
 font = pygame.font.Font("../materials/joystix_monospace.otf",15)
+insettings=False
 ingame=False
 run=True
 GAMEUPDATE=pygame.USEREVENT
@@ -17,13 +19,14 @@ bg=pygame.image.load("../materials/pngwing.com.png")
 walls=pygame.image.load("../materials/walls.png")
 resize=pygame.transform.scale(bg,(280,190))
 buttonposs=[(130,375,165,25),(130,405,165,25),(130,425,165,25)]
+settingsarrowpos=0
 gameOverArrow=0
 arrowpos=0
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run=False
-        elif not ingame:
+        elif not ingame and not insettings:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
                     arrowpos=(arrowpos+1)%3
@@ -34,7 +37,11 @@ while run:
                         run=False
                     elif arrowpos == 0:
                         ingame = True
-        elif ingame:
+                        insettings=False
+                    elif arrowpos == 1:
+                        ingame=False
+                        insettings=True
+        elif ingame and not insettings:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT and not game.game_over:
                     game.moveLeft()
@@ -56,10 +63,35 @@ while run:
                         game.reset()
                     elif gameOverArrow == 0:
                         game.reset()
+                    bgmusic.play(loops=-1)
             if event.type == GAMEUPDATE and not game.game_over:
                 game.moveDown()
+        elif insettings and not ingame:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    settingsarrowpos=(settingsarrowpos+1)%3
+                elif event.key == pygame.K_UP:
+                    settingsarrowpos=(settingsarrowpos-1)%3
+                elif settingsarrowpos == 2 and event.key == pygame.K_RETURN:
+                    ingame=False
+                    insettings=False
+                elif settingsarrowpos == 0:
+                    if event.key == pygame.K_m:
+                        bgmusic_volume = 0 if bgmusic_volume else 1
+                    elif event.key == pygame.K_LEFT:
+                        bgmusic_volume = 0 if (bgmusic_volume-0.1<=0) else (bgmusic_volume-0.1)
+                    elif event.key == pygame.K_RIGHT:
+                        bgmusic_volume = 1 if (bgmusic_volume+0.1>=1) else (bgmusic_volume+0.1)
+                    bgmusic.set_volume(bgmusic_volume)
+                elif settingsarrowpos == 1:
+                    if event.key == pygame.K_m:
+                        game.sound_effect_volume=0 if game.sound_effect_volume else 1
+                    elif event.key == pygame.K_LEFT:
+                        game.sound_effect_volume = 0 if (game.sound_effect_volume-0.1<=0) else (game.sound_effect_volume-0.1)
+                    elif event.key == pygame.K_RIGHT:
+                        game.sound_effect_volume = 1 if (game.sound_effect_volume+0.1>=1) else (game.sound_effect_volume+0.1)
     # <-------------------------MAIN MENU ------------------------>
-    if not ingame:
+    if not ingame and not insettings:
         screen.fill((65, 105, 225))
         screen.blit(resize,(75,180))
         button=pygame.draw.rect(screen,(252,251,244),pygame.Rect(buttonposs[arrowpos]))
@@ -80,7 +112,7 @@ while run:
             screen.blit(textSurface,textRect)
     #<-------------------------END------------------------------->
     #<-------------------------GAME------------------------------>
-    elif ingame:
+    elif ingame and not insettings:
         screen.fill((65, 105, 225))
         gameArea=pygame.draw.rect(screen,(65, 105, 225),pygame.Rect(20,10,300,600))
         game.draw(screen)
@@ -89,6 +121,7 @@ while run:
         screen.blit(font.render("Score",1,(252,251,244)),(360,10))
         screen.blit(font.render("Next Block",1,(252,251,244)),(160,610))
         if game.game_over:
+            bgmusic.stop()
             pygame.draw.rect(screen,(252,251,244),pygame.Rect(25,250,400,200))
             pygame.draw.rect(screen,(65, 105, 225),pygame.Rect(35,260,380,180))
             screen.blit(pygame.transform.scale(font.render("Game Over",1,"red"),(200,50)),(120,280))
@@ -97,6 +130,17 @@ while run:
             pygame.draw.rect(screen,(65, 105, 225) if gameOverArrow != 1 else (252,251,244),pygame.Rect(150,350,250,20))
             screen.blit(font.render("Back to Main Menu",1,(252,251,244) if gameOverArrow!=1 else (65, 105, 225)),(170,350))
     #<-------------------------END------------------------------>
+    #<-------------------------SETTINGS------------------------------>
+    elif insettings and not ingame:
+        screen.fill((65, 105, 225))
+        pygame.draw.rect(screen,(65, 105, 225) if settingsarrowpos!=0 else (252,251,244),pygame.Rect(30,250,400,20))
+        pygame.draw.rect(screen,(252,251,244) if settingsarrowpos!=0 else (65, 105, 225),pygame.Rect(280,255,100*bgmusic_volume,10))
+        screen.blit(font.render("Music Volume",1,(252,251,244) if settingsarrowpos!=0 else (65, 105, 225)),(70,250))
+        pygame.draw.rect(screen,(65, 105, 225) if settingsarrowpos!=1 else (252,251,244),pygame.Rect(30,300,400,20))
+        pygame.draw.rect(screen, (252,251,244) if settingsarrowpos!=1 else (65, 105, 225),pygame.Rect(280,305,100*game.sound_effect_volume,10))
+        screen.blit(font.render("Sound Effect Volume",1,(252,251,244) if settingsarrowpos!=1 else (65, 105, 225)),(30,300))
+        pygame.draw.rect(screen,(65, 105, 225) if settingsarrowpos!=2 else (252,251,244),pygame.Rect(30,350,400,20))
+        screen.blit(font.render("Back To The Main Menu",1,(252,251,244) if settingsarrowpos!=2 else (65, 105, 225)),(90,350))
     pygame.display.update()
     clock.tick(60)
 pygame.quit()

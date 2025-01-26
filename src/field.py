@@ -1,6 +1,6 @@
 import pygame
 class Field:
-    def __init__(self,posInDispX,posInDispY):
+    def __init__(self,posInDispX,posInDispY,soundEffectVolume):
         self.rows=20
         self.columns = 10
         self.cellSize=30
@@ -9,6 +9,8 @@ class Field:
         self.posInDispX=posInDispX
         self.posInDispY=posInDispY
         self.clear_line_sound=pygame.mixer.Sound("../materials/clear_line.ogg")
+        self.sound_effect_volume=soundEffectVolume
+        self.clear_line_sound.set_volume(self.sound_effect_volume)
     def printField(self):
         for i in range(self.rows):
             for j in range(self.columns):
@@ -39,7 +41,6 @@ class Field:
         for i in range(self.rows-1,0,-1):
             if self.isRowFull(i):
                 self.clear_line_sound.play(loops=0)
-                self.clear_line_sound.set_volume(1)
                 self.clearRow(i)
                 completed+=1
             elif completed>0:

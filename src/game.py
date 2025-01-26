@@ -1,13 +1,17 @@
 from field import Field
 from blocks import *
 from random import choice
+import pygame
 class Game:
     def __init__(self,posInDispX,posInDispY):
-        self.field = Field(posInDispX,posInDispY)
+        self.sound_effect_volume=1
+        self.field = Field(posInDispX,posInDispY,self.sound_effect_volume)
         self.blocks=[IBlock(),JBlock(),LBlock(),OBlock(),SBlock(),TBlock(),ZBlock()]
         self.currentBlock=self.getRandomBlock()
         self.nextBlock=self.getRandomBlock()
         self.game_over=False
+        self.game_over_sound_effect=pygame.mixer.Sound("../materials/game_over_sound_effect.ogg")
+        self.game_over_sound_effect.set_volume(self.sound_effect_volume)
     def getRandomBlock(self):
         if (len(self.blocks)==0):
             self.blocks=[IBlock(),JBlock(),LBlock(),OBlock(),SBlock(),TBlock(),ZBlock()]
@@ -40,6 +44,7 @@ class Game:
         self.field.clearFullRows()
         if not self.freeCell():
             self.game_over=True
+            self.game_over_sound_effect.play(loops=0)
     def freeCell(self):
         tiles = self.currentBlock.getCellPos()
         for tile in tiles:
