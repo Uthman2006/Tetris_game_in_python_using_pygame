@@ -6,6 +6,9 @@ from position import Position
 2,0 2,1 2,2 2,3
 3,0 3,1 3,2 3,3
 """
+"""
+These all class is used for saving the position of every block those are in the game.
+"""
 class IBlock(Block):
     def __init__(self):
         super().__init__(id=1)
