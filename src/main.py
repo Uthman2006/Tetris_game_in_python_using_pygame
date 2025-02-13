@@ -13,6 +13,7 @@ font = pygame.font.Font("../materials/joystix_monospace.otf",15)
 insettings=False
 ingame=False
 run=True
+pygame.display.set_caption("Tetris")
 GAMEUPDATE=pygame.USEREVENT # this varibale is used to save the event which is the updateing the game. withouy this varibale game moves fast.
 pygame.time.set_timer(GAMEUPDATE,200)
 bg=pygame.image.load("../materials/pngwing.com.png")
