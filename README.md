@@ -19,12 +19,12 @@ This game was developed using Python's frequintly used library PyGame. The algor
         <td width="300px" height="100px">Block drops faster</td>
     </tr>
     <tr>
-        <td width="300px" height="100px">> (Left Arrow)</td>
-        <td width="300px" height="100px">Block moves to the left</td>
+        <td width="300px" height="100px">> (Right Arrow)</td>
+        <td width="300px" height="100px">Block moves to the right</td>
     </tr>
     <tr>
-        <td width="300px" height="100px">< (Right Arrow)</td>
-        <td width="300px" height="100px">Block moves to the right</td>
+        <td width="300px" height="100px">< (Left Arrow)</td>
+        <td width="300px" height="100px">Block moves to the left</td>
     </tr>
     <tr>
         <td width="300px" height="100px">A</td>
@@ -40,11 +40,11 @@ This game was developed using Python's frequintly used library PyGame. The algor
         </tr>
     </thead>
      <tr>
-        <td width="300px" height="100px">> (Left Arrow)</td>
+        <td width="300px" height="100px">> (Right Arrow)</td>
         <td width="300px" height="100px">Volume Up</td>
     </tr>
     <tr>
-        <td width="300px" height="100px">< (Right Arrow)</td>
+        <td width="300px" height="100px">< (Left Arrow)</td>
         <td width="300px" height="100px">Volume Down</td>
     </tr>
     <tr>
